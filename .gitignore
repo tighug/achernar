@@ -1,1 +1,5 @@
 *.env
+
+auction_db
+auction_api
+admin_web
