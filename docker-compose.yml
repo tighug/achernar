@@ -1,19 +1,71 @@
 version: "3.7"
 services:
-  db:
-    image: mysql:5.7
-    restart: always
-    environment:
-      - .env
+  auction_db:
+    container_name: auction_db
+    build: ./auction_db
+    env_file:
+      - ./.env
     ports:
       - "3306:3306"
-  app:
-    image: tighug/pm:latest
-    environment:
-      - .env
-    depends_on:
-      - db
+    restart: always
+  auction_api:
+    container_name: auction_api
+    image: node:11
+    env_file:
+      - ./.env
     ports:
-      - "3000:3000"
+      - "8000:8000"
+    volumes:
+      - ./auction_api:/app
+    working_dir: /app
+    command: bash -c "yarn && yarn dev"
+    tty: true
+    depends_on:
+      - auction_db
     links:
-      - db
+      - auction_db
+  contract_api:
+    container_name: contract_api
+    image: node:11
+    env_file:
+      - ./.env
+    ports:
+      - "7000:7000"
+    volumes:
+      - ./contract_api:/app
+    working_dir: /app
+    command: >
+      bash -c "yarn && 
+      yarn run compile &&
+      yarn run migrate:ganache --reset &&
+      yarn start"
+    tty: true
+    depends_on:
+      - ganache
+    links:
+      - ganache
+  admin_web:
+    container_name: admin_web
+    image: node:11
+    env_file:
+      - ./.env
+    ports: 
+      - "3000:3000"
+    volumes:
+      - ./admin_web:/app
+    working_dir: /app
+    command: bash -c "yarn && yarn dev"
+    tty: true
+    depends_on:
+      - auction_api
+      - contract_api
+    links:
+      - auction_api
+      - contract_api
+  ganache:
+    container_name: ganache
+    image: trufflesuite/ganache-cli:latest
+    volumes:
+      - ./ganache:/var/ganache
+    ports: 
+      - "8545:8545"
