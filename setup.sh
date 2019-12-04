@@ -17,7 +17,7 @@ for ((i = 0; i < 4; i++)); do
       git pull
     fi
   else
-    git clone "$REPO_URL${REPOS[$i]}.git"
+    git clone -b ${BRANCHES[$i]} "$REPO_URL${REPOS[$i]}.git"
     cd ${REPOS[$i]}
   fi
   echo ""
