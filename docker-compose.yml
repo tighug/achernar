@@ -8,6 +8,7 @@ services:
     ports:
       - "3306:3306"
     restart: always
+
   auction_api:
     container_name: auction_api
     image: node:11
@@ -18,12 +19,13 @@ services:
     volumes:
       - ./auction_api:/app
     working_dir: /app
-    command: bash -c "yarn && yarn dev"
+    command: yarn dev
     tty: true
     depends_on:
       - auction_db
     links:
       - auction_db
+
   contract_api:
     container_name: contract_api
     image: node:11
@@ -35,8 +37,7 @@ services:
       - ./contract_api:/app
     working_dir: /app
     command: >
-      bash -c "yarn && 
-      yarn run compile &&
+      bash -c "yarn run compile &&
       yarn run migrate:ganache --reset &&
       yarn start"
     tty: true
@@ -44,17 +45,18 @@ services:
       - ganache
     links:
       - ganache
+
   admin_web:
     container_name: admin_web
     image: node:11
     env_file:
       - ./.env
-    ports: 
+    ports:
       - "3000:3000"
     volumes:
       - ./admin_web:/app
     working_dir: /app
-    command: bash -c "yarn && yarn dev"
+    command: yarn dev
     tty: true
     depends_on:
       - auction_api
@@ -62,8 +64,9 @@ services:
     links:
       - auction_api
       - contract_api
+
   ganache:
     container_name: ganache
     image: trufflesuite/ganache-cli:latest
-    ports: 
+    ports:
       - "8545:8545"
