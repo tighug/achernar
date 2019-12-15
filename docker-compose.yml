@@ -38,7 +38,7 @@ services:
     working_dir: /app
     command: >
       bash -c "yarn run compile &&
-      yarn run migrate:ganache --reset &&
+      yarn run migrate:ganache &&
       yarn start"
     tty: true
     depends_on:
@@ -68,5 +68,6 @@ services:
   ganache:
     container_name: ganache
     image: trufflesuite/ganache-cli:latest
+    command: ["-a", "1"]
     ports:
       - "8545:8545"
