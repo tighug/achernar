@@ -5,8 +5,13 @@ services:
     build: ./auction_db
     env_file:
       - ./.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${AUCTION_DB_ROOT_PASSWORD}
+      MYSQL_USER: ${AUCTION_DB_USER}
+      MYSQL_PASSWORD: ${AUCTION_DB_PASSWORD}
+      MYSQL_DATABASE: ${AUCTION_DB_NAME}
     ports:
-      - "3306:3306"
+      - ${AUCTION_DB_PORT}:${AUCTION_DB_PORT}
     restart: always
 
   auction_api:
@@ -15,7 +20,7 @@ services:
     env_file:
       - ./.env
     ports:
-      - "8000:8000"
+      - ${AUCTION_API_PORT}:${AUCTION_API_PORT}
     volumes:
       - ./auction_api:/app
     working_dir: /app
@@ -32,7 +37,7 @@ services:
     env_file:
       - ./.env
     ports:
-      - "7000:7000"
+      - ${CONTRACT_API_PORT}:${CONTRACT_API_PORT}
     volumes:
       - ./contract_api:/app
     working_dir: /app
@@ -52,7 +57,7 @@ services:
     env_file:
       - ./.env
     ports:
-      - "3000:3000"
+      - ${ADMIN_WEB_PORT}:${ADMIN_WEB_PORT}
     volumes:
       - ./admin_web:/app
     working_dir: /app
@@ -70,4 +75,4 @@ services:
     image: trufflesuite/ganache-cli:latest
     command: ["-a", "1"]
     ports:
-      - "8545:8545"
+      - ${GANACHE_PORT}:${GANACHE_PORT}
