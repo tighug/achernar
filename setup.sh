@@ -6,12 +6,12 @@ echo -n "Password for 'https://"$user"@gitlab.com': "
 read -s password
 echo ""
 
-REPOS=(auction_db auction_api contract_api admin_web)
-BRANCHES=(master develop master develop)
+REPOS=(auction-db auction-api contract-api)
+BRANCHES=(master develop master)
 REPO_URL="https://"$user":"$password"@gitlab.com/ylab-bc/2019/surplus-power-market/"
 INIT_DIR=$PWD
 
-for ((i = 0; i < 4; i++)); do
+for ((i = 0; i < 3; i++)); do
   if [ -d "${REPOS[$i]}" ]; then
     cd ${REPOS[$i]}
     git fetch -p
