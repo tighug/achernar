@@ -1,6 +1,5 @@
 *.env
 
-auction_db
-auction_api
-contract_api
-admin_web
+auction-db
+auction-api
+contract-api
