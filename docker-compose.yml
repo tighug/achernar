@@ -1,8 +1,8 @@
 version: "3.7"
 services:
-  auction_db:
-    container_name: auction_db
-    build: ./auction_db
+  auction-db:
+    container_name: auction-db
+    build: ./auction-db
     env_file:
       - ./.env
     environment:
@@ -13,62 +13,51 @@ services:
     ports:
       - ${AUCTION_DB_PORT}:${AUCTION_DB_PORT}
     restart: always
+  
+  auction-redis:
+    container_name: auction-redis
+    image: redis:alpine
+    ports:
+      - ${AUCTION_REDIS_PORT}:${AUCTION_REDIS_PORT}
 
-  auction_api:
-    container_name: auction_api
+  auction-api:
+    container_name: auction-api
     image: node:11
     env_file:
       - ./.env
     ports:
       - ${AUCTION_API_PORT}:${AUCTION_API_PORT}
     volumes:
-      - ./auction_api:/app
+      - ./auction-api:/app
     working_dir: /app
-    command: yarn dev
+    command: yarn start
     tty: true
     depends_on:
-      - auction_db
+      - auction-db
+      - auction-redis
     links:
-      - auction_db
+      - auction-db
+      - auction-redis
 
-  contract_api:
-    container_name: contract_api
+  contract-api:
+    container_name: contract-api
     image: node:11
     env_file:
       - ./.env
     ports:
       - ${CONTRACT_API_PORT}:${CONTRACT_API_PORT}
     volumes:
-      - ./contract_api:/app
+      - ./contract-api:/app
     working_dir: /app
     command: >
-      bash -c "yarn run compile &&
-      yarn run migrate:ganache &&
+      bash -c "yarn compile &&
+      yarn migrate:ganache &&
       yarn start"
     tty: true
     depends_on:
       - ganache
     links:
       - ganache
-
-  admin_web:
-    container_name: admin_web
-    image: node:11
-    env_file:
-      - ./.env
-    ports:
-      - ${ADMIN_WEB_PORT}:${ADMIN_WEB_PORT}
-    volumes:
-      - ./admin_web:/app
-    working_dir: /app
-    command: yarn dev
-    tty: true
-    depends_on:
-      - auction_api
-      - contract_api
-    links:
-      - auction_api
-      - contract_api
 
   ganache:
     container_name: ganache
