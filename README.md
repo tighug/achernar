@@ -1,6 +1,6 @@
-# Power Market
+# Achernar Server
 
-複数コンテナで構築する、余剰電力市場の Web サービス。
+余剰電力取引システムAchernarのサーバー
 
 ---
 
