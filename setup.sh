@@ -1,14 +1,8 @@
 #!/bin/bash -eu
 
-echo -n "Username for 'https://gitlab.com': "
-read user
-echo -n "Password for 'https://"$user"@gitlab.com': "
-read -s password
-echo ""
-
-REPOS=(auction-db auction-api contract-api)
+REPOS=(achernar-auction-db achernar-auction-api achernar-contract-api)
 BRANCHES=(master develop master)
-REPO_URL="https://"$user":"$password"@gitlab.com/ylab-bc/2019/surplus-power-market/"
+REPO_URL="https://github.com/tighug/"
 INIT_DIR=$PWD
 
 for ((i = 0; i < 3; i++)); do

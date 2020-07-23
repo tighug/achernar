@@ -1,22 +1,22 @@
 # Achernar Server
 
-余剰電力取引システムAchernarのサーバー
+余剰電力取引システム Achernar のサーバー
 
 ---
 
-## インストール
+## Installation
 
 ```bash
-git clone https://gitlab.com/ylab-bc/2019/surplus-power-market/power-market.git
+git clone https://github.com/tighug/achernar-server.git
 ```
 
 ---
 
-## セットアップ
+## Setup
 
-### 1. 必要なリポジトリをGitLabからクローン
+### 1. 必要なリポジトリを GitHub からクローン
 
-bashファイルを実行すると、自動で全てのリポジトリをクローンする。
+bash ファイルを実行すると、自動で全てのリポジトリをクローンする。
 
 ```bash
 ./setup.sh
