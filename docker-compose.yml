@@ -1,67 +1,25 @@
 version: "3.7"
 services:
-  auction-db:
-    container_name: auction-db
-    build: ./achernar-auction-db
-    env_file:
-      - ./.env
+  flow-api:
+    image: tighug/achernar-flow-api
     environment:
-      MYSQL_ROOT_PASSWORD: ${AUCTION_DB_ROOT_PASSWORD}
-      MYSQL_USER: ${AUCTION_DB_USER}
-      MYSQL_PASSWORD: ${AUCTION_DB_PASSWORD}
-      MYSQL_DATABASE: ${AUCTION_DB_NAME}
+      DB_URL: ${FLOW_DB_URL}
     ports:
-      - ${AUCTION_DB_PORT}:${AUCTION_DB_PORT}
+      - ${FLOW_API_PORT}:8000
     restart: always
-
-  auction-redis:
-    container_name: auction-redis
-    image: redis:alpine
-    ports:
-      - ${AUCTION_REDIS_PORT}:${AUCTION_REDIS_PORT}
-
-  auction-api:
-    container_name: auction-api
-    image: node:11
-    env_file:
-      - ./.env
-    ports:
-      - ${AUCTION_API_PORT}:${AUCTION_API_PORT}
-    volumes:
-      - ./achernar-auction-api:/app
-    working_dir: /app
-    command: yarn start
-    tty: true
     depends_on:
-      - auction-db
-      - auction-redis
-    links:
-      - auction-db
-      - auction-redis
+      - flow-db
 
-  contract-api:
-    container_name: contract-api
-    image: node:11
-    env_file:
-      - ./.env
+  flow-db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_DATABASE: flow
     ports:
-      - ${CONTRACT_API_PORT}:${CONTRACT_API_PORT}
+      - ${FLOW_DB_PORT}:3306
+    restart: always
     volumes:
-      - ./achernar-contract-api:/app
-    working_dir: /app
-    command: >
-      bash -c "yarn compile &&
-      yarn migrate:ganache &&
-      yarn start"
-    tty: true
-    depends_on:
-      - ganache
-    links:
-      - ganache
-
-  ganache:
-    container_name: ganache
-    image: trufflesuite/ganache-cli:latest
-    command: ["-a", "1"]
-    ports:
-      - ${GANACHE_PORT}:${GANACHE_PORT}
+      - ./flow-db/initdb.d:/docker-entrypoint-initdb.d
+      - ./flow-db/conf.d:/etc/mysql/conf.d
