@@ -1,0 +1,20 @@
+version: "3.7"
+services:
+  flow-db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: test_root_pass
+      MYSQL_USER: test_user
+      MYSQL_PASSWORD: test_pass
+      MYSQL_DATABASE: flow
+    ports:
+      - 3306:3306
+    restart: always
+    volumes:
+      - ./flow-db/initdb.d:/docker-entrypoint-initdb.d
+      - ./flow-db/conf.d:/etc/mysql/conf.d
+
+  flow-redis:
+    image: redis:buster
+    ports:
+      - 6379:6379
