@@ -1,0 +1,52 @@
+@startuml sample_erd
+hide empty members
+hide circle
+skinparam Linetype ortho
+skinparam Shadowing false
+skinparam PackageStyle rectangle
+
+entity load_samples {
+  + id : int
+  num : int
+  hour : int
+  minute : int
+  val : float
+  season : enum
+}
+
+entity pv_samples {
+  + id : int
+  num : int
+  hour : int
+  minute : int
+  val : float
+  season : enum
+}
+
+entity ehp_samples {
+  + id : int
+  num : int
+  hour : int
+  minute : int
+  val : float
+  season : enum
+}
+
+entity ev_samples {
+  + id : int
+  num : int
+  hour : int
+  minute : int
+  val : float
+  season : enum
+}
+
+entity uchp_samples {
+  + id : int
+  num : int
+  hour : int
+  minute : int
+  val : float
+  season : enum
+}
+@enduml

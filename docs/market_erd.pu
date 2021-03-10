@@ -1,0 +1,106 @@
+@startuml erd
+hide empty members
+hide circle
+skinparam Linetype ortho
+skinparam Shadowing false
+skinparam PackageStyle rectangle
+
+
+entity bids {
+  + id : int
+  # market_name : string
+  # user : address
+  price : int
+  amount : int
+  contracted : int
+  type : enum
+}
+
+entity users {
+  + address : address
+  # node_id: int
+}
+
+entity markets {
+  + name : string
+  # case_id : int
+}
+
+entity feeders {
+  + id  : int
+  network_num : int
+  feeder_num  : int
+}
+
+entity lines {
+  + id  : int
+  # prev_node_id  : int
+  # next_node_id  : int
+  length_m : float
+  phase : int
+  code : string
+  r_ohm_per_km  : float
+  x_ohm_per_km  : float
+}
+entity nodes {
+  + id  : int
+  # feeder_id : int
+  num : int
+  pos_x : float
+  pos_y : float
+  has_load : boolean
+}
+entity samples {
+  + id : int
+  num : int
+  hour : int
+  minute : int
+  val : float
+  season : string
+  type: string
+}
+entity cases {
+  + id  : int
+  # feeder_id : int
+  hour : int
+  minute : int
+  pv_count : int
+  pv_scale : float
+  load_scale : float
+  seed : int
+}
+entity flows {
+  + id  : int
+  # case_id : int
+  # line_id : int
+  next_node_p : float
+  next_node_v : float
+  line_i : float
+  before : boolean
+}
+
+entity nodal_prices {
+  + id : int
+  # market_id : int
+  # node_id : int
+  mu_ip : float
+  mu_in : float
+  mu_vp : float
+  mu_vn : float
+  weight_price : float
+}
+
+cases }|-|| feeders
+flows }|--|| cases
+flows }|-|| lines
+feeders ||-|{ nodes
+lines }|--|| nodes
+
+cases ||--o| markets
+nodes ||--||users
+markets ||--o{ bids
+users ||--o{ bids
+
+markets ||-|{ nodal_prices
+nodes||--|{ nodal_prices
+@enduml

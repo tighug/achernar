@@ -4,6 +4,8 @@ services:
     image: tighug/achernar-flow-api
     environment:
       DB_URL: ${FLOW_DB_URL}
+      REDIS_HOST: ${FLOW_REDIS_HOST}
+      REDIS_PORT: ${FLOW_REDIS_PORT}
     ports:
       - ${FLOW_API_PORT}:8000
     restart: always
@@ -23,3 +25,9 @@ services:
     volumes:
       - ./flow-db/initdb.d:/docker-entrypoint-initdb.d
       - ./flow-db/conf.d:/etc/mysql/conf.d
+
+  flow-redis:
+    image: redis:buster
+    ports:
+      - ${FLOW_REDIS_PORT}:6379
+    restart: always

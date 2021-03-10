@@ -1,0 +1,20 @@
+@startuml usecase
+skinparam Shadowing false
+left to right direction
+
+actor DSO
+actor Seller 
+actor Buyer
+actor :Service Provider: as SP
+
+DSO --> (Create the output control schedule)
+Seller --> (Register a user)
+Seller --> (Bid to sell)
+Seller --> (Withdraw)
+Buyer --> (Register a user)
+Buyer --> (Bid to buy)
+Buyer --> (Withdraw)
+SP --> (Register a user as a seller)
+SP --> (Register a user as a buyer)
+SP --> (Create a market)
+@enduml
