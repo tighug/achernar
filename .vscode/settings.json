@@ -1,0 +1,4 @@
+{
+    "openapi.defaultPreviewRenderer": "redoc",
+    "swaggerViewer.previewInBrowser": true
+}
